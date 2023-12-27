@@ -19,11 +19,25 @@ function love.load()
   bellheight = bellimg:getHeight()
   sx = 200 / bellwidth
   new_h = math.floor(bellheight * sx)
+
+  ding = love.audio.newSource("ding.ogg", "static")
+  dong = love.audio.newSource("dong.ogg", "static")
+
+  prevrot = 0
 end
 
 function love.update()
   mouseval = string.format("%.2f", inverseLerp(0, 800, printx))
   rotate = lerp(0.5, -0.5, mouseval)
+  if prevrot > -0.4 and rotate < -0.4 then
+    ding:stop()
+    ding:play()
+  end
+  if prevrot < 0.4 and rotate > 0.4 then
+    dong:stop()
+    dong:play()
+  end
+  prevrot = rotate
 end
 
 function love.draw()
