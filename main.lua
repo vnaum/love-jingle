@@ -17,19 +17,31 @@ function love.load()
   bellimg = love.graphics.newImage("christmas-bell.png")
   bellwidth  = bellimg:getWidth()
   bellheight = bellimg:getHeight()
+  sx = 200 / bellwidth
+  new_h = math.floor(bellheight * sx)
 end
 
 function love.update()
   mouseval = string.format("%.2f", inverseLerp(0, 800, printx))
-  rotate = lerp(-0.5, 0.5, mouseval)
+  rotate = lerp(0.5, -0.5, mouseval)
 end
 
 function love.draw()
   -- love.graphics.print('Hello World!', 400, 300)
   love.graphics.rectangle( 'fill', 0, 0, printx, 15 )
-  love.graphics.print('mouseval: '.. mouseval .. ' rot: ' .. rotate , 0, 25)
+  love.graphics.print('mouseval: '.. love.graphics.getHeight() .. ' rot: ' .. rotate , 0, 25)
 
-  love.graphics.draw(bellimg, 100, 100, rotate, 0.10)
+  x = 0
+  y = 50
+  while y < love.graphics.getHeight() do
+    while x < love.graphics.getWidth()+200 do
+      love.graphics.draw(bellimg, x, y, rotate, sx, sx, bellwidth/2, 0)
+      x = x + 200
+    end
+    x = 0
+    -- love.graphics.print('y: '.. y, 0, y)
+    y = y + new_h
+  end
 end
 
 
